@@ -11,39 +11,53 @@ const EmployeeList = () => {
   const [selectedDepartment, setSelectedDepartment] = useState("جميع الأقسام");
   const [loading, setLoading] = useState(true);
 
-  const fetchEmployees = async () => {
+  // استخدام useCallback لـ fetchEmployees
+  const fetchEmployees = useCallback(async () => {
     try {
+      setLoading(true);
       const querySnapshot = await getDocs(collection(db, "employees"));
       const employeesList = [];
       querySnapshot.forEach((doc) => {
         employeesList.push({ id: doc.id, ...doc.data() });
       });
       setEmployees(employeesList);
-      filterEmployees(employeesList, selectedDepartment);
+      
+      // تطبيق التصفية بعد جلب البيانات
+      if (selectedDepartment === "جميع الأقسام") {
+        setFilteredEmployees(employeesList);
+      } else {
+        const filtered = employeesList.filter(
+          (employee) => employee.department === selectedDepartment
+        );
+        setFilteredEmployees(filtered);
+      }
     } catch (error) {
       console.error("Error fetching employees:", error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedDepartment]);
 
-  const filterEmployees = useCallback((employeesList, department) => {
-    if (department === "جميع الأقسام") {
-      setFilteredEmployees(employeesList);
+  // استخدام useCallback لـ filterEmployees
+  const filterEmployees = useCallback(() => {
+    if (selectedDepartment === "جميع الأقسام") {
+      setFilteredEmployees(employees);
     } else {
-      const filtered = employeesList.filter(
-        (employee) => employee.department === department
+      const filtered = employees.filter(
+        (employee) => employee.department === selectedDepartment
       );
       setFilteredEmployees(filtered);
     }
-  }, []);
+  }, [employees, selectedDepartment]);
 
+  // useEffect لجلب البيانات عند التحميل الأولي
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [fetchEmployees]); // تمت إضافة fetchEmployees إلى dependencies
 
+  // useEffect للتصفية عند تغيير القسم أو البيانات
   useEffect(() => {
-    filterEmployees(employees, selectedDepartment);
+    filterEmployees();
   }, [selectedDepartment, employees, filterEmployees]);
 
   if (loading) {
