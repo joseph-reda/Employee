@@ -1,4 +1,6 @@
-
+/* ===========================================
+   أنماط قائمة الموظفين
+   =========================================== */
 .employee-list-container {
   padding: 1rem 0;
 }
@@ -20,8 +22,62 @@
   gap: 1.5rem;
 }
 
+/* رسائل الحالة */
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #4a5568;
+  grid-column: 1 / -1;
+}
+
+.no-employees {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #718096;
+  grid-column: 1 / -1;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* تصميم متجاوب */
 @media (max-width: 768px) {
   .employee-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .employees-count {
+    text-align: center;
+  }
+}
+
+/* تأثيرات للقائمة */
+.employee-grid.fade-in {
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تحسينات للطباعة */
+@media print {
+  .filter-bar,
+  .employees-count {
+    display: none !important;
+  }
+  
+  .employee-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 }

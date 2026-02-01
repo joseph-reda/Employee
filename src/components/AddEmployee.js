@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { collection, addDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 import "./AddEmployee.css";
 
-const AddEmployee = ({ onEmployeeAdded }) => {
+const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
   // دالة لتحويل الملف إلى Base64
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -23,6 +23,9 @@ const AddEmployee = ({ onEmployeeAdded }) => {
     cv: null,
   });
 
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
   const departments = [
     "مدني",
     "معماري",
@@ -38,6 +41,27 @@ const AddEmployee = ({ onEmployeeAdded }) => {
     "Planning",
   ];
 
+  // تحديث النموذج عند التعديل
+  useEffect(() => {
+    if (employeeToEdit) {
+      setIsEditing(true);
+      setFormData({
+        name: employeeToEdit.name || "",
+        age: employeeToEdit.age || "",
+        experience: employeeToEdit.experience || "",
+        department: employeeToEdit.department || "مدني",
+        photo: null,
+        cv: null,
+      });
+      
+      if (employeeToEdit.photoBase64 || employeeToEdit.photoURL) {
+        setPhotoPreview(employeeToEdit.photoBase64 || employeeToEdit.photoURL);
+      }
+    } else {
+      setIsEditing(false);
+    }
+  }, [employeeToEdit]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -48,10 +72,21 @@ const AddEmployee = ({ onEmployeeAdded }) => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
+    const file = files[0];
+    
     setFormData({
       ...formData,
-      [name]: files[0],
+      [name]: file,
     });
+
+    // معاينة الصورة
+    if (name === 'photo' && file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -63,10 +98,16 @@ const AddEmployee = ({ onEmployeeAdded }) => {
 
       if (formData.photo) {
         photoBase64 = await convertToBase64(formData.photo);
+      } else if (employeeToEdit && employeeToEdit.photoBase64) {
+        // استخدام الصورة الحالية إذا لم يتم اختيار جديدة
+        photoBase64 = employeeToEdit.photoBase64;
       }
 
       if (formData.cv) {
         cvBase64 = await convertToBase64(formData.cv);
+      } else if (employeeToEdit && employeeToEdit.cvBase64) {
+        // استخدام السيرة الذاتية الحالية إذا لم يتم اختيار جديدة
+        cvBase64 = employeeToEdit.cvBase64;
       }
 
       const employeeData = {
@@ -76,37 +117,61 @@ const AddEmployee = ({ onEmployeeAdded }) => {
         department: formData.department,
         photoBase64: photoBase64,
         cvBase64: cvBase64,
-        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
-      await addDoc(collection(db, "employees"), employeeData);
+      if (isEditing && employeeToEdit) {
+        // تحديث الموظف الموجود
+        const employeeRef = doc(db, "employees", employeeToEdit.id);
+        await updateDoc(employeeRef, employeeData);
+        alert("✅ تم تحديث بيانات الموظف بنجاح!");
+      } else {
+        // إضافة موظف جديد
+        employeeData.createdAt = new Date();
+        await addDoc(collection(db, "employees"), employeeData);
+        alert("✅ تم إضافة الموظف بنجاح!");
+      }
       
-      alert("✅ تم إضافة الموظف بنجاح!");
+      // إعادة تعيين النموذج
+      resetForm();
       
-      setFormData({
-        name: "",
-        age: "",
-        experience: "",
-        department: "مدني",
-        photo: null,
-        cv: null,
-      });
-
-      document.getElementById("photo-input").value = "";
-      document.getElementById("cv-input").value = "";
-
+      // إعلام المكون الأب بالتحديث
       if (onEmployeeAdded) {
         onEmployeeAdded();
       }
+
     } catch (error) {
-      console.error("Error adding employee:", error);
-      alert("❌ حدث خطأ أثناء إضافة الموظف");
+      console.error("Error saving employee:", error);
+      alert("❌ حدث خطأ أثناء حفظ البيانات");
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      age: "",
+      experience: "",
+      department: "مدني",
+      photo: null,
+      cv: null,
+    });
+    setPhotoPreview(null);
+    setIsEditing(false);
+    document.getElementById("photo-input").value = "";
+    document.getElementById("cv-input").value = "";
+    
+    if (onCancelEdit) {
+      onCancelEdit();
+    }
+  };
+
+  const handleCancel = () => {
+    resetForm();
   };
 
   return (
     <div className="add-employee-container">
-      <h2>إضافة موظف جديد</h2>
+      <h2>{isEditing ? "تعديل بيانات الموظف" : "إضافة موظف جديد"}</h2>
       <form onSubmit={handleSubmit} className="employee-form">
         <div className="form-group">
           <label htmlFor="name">اسم الموظف:</label>
@@ -177,6 +242,12 @@ const AddEmployee = ({ onEmployeeAdded }) => {
           {formData.photo && (
             <small>تم اختيار: {formData.photo.name}</small>
           )}
+          {photoPreview && (
+            <div className="photo-preview">
+              <img src={photoPreview} alt="معاينة الصورة" />
+              <small>معاينة الصورة</small>
+            </div>
+          )}
         </div>
 
         <div className="form-group">
@@ -191,11 +262,26 @@ const AddEmployee = ({ onEmployeeAdded }) => {
           {formData.cv && (
             <small>تم اختيار: {formData.cv.name}</small>
           )}
+          {employeeToEdit?.cvBase64 && !formData.cv && (
+            <small>السيرة الذاتية الحالية محفوظة</small>
+          )}
         </div>
 
-        <button type="submit" className="submit-btn">
-          إضافة الموظف
-        </button>
+        <div className="form-actions">
+          <button type="submit" className="submit-btn">
+            {isEditing ? "💾 حفظ التعديلات" : "➕ إضافة الموظف"}
+          </button>
+          
+          {isEditing && (
+            <button 
+              type="button" 
+              className="cancel-btn"
+              onClick={handleCancel}
+            >
+              ✕ إلغاء
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );

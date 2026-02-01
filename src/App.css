@@ -1,3 +1,6 @@
+/* ===========================================
+   أنماط التطبيق الرئيسية
+   =========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -9,6 +12,7 @@ body {
     background-color: #f5f7fa;
     color: #333;
     line-height: 1.6;
+    direction: rtl;
 }
 
 .App {
@@ -36,6 +40,7 @@ body {
     min-width: 300px;
 }
 
+/* تصميم متجاوب */
 @media (max-width: 768px) {
     .app-container {
         flex-direction: column;
@@ -46,17 +51,84 @@ body {
     }
 }
 
-.loading {
+/* رسائل النظام */
+.system-message {
+    padding: 12px 20px;
     text-align: center;
-    padding: 40px;
-    font-size: 18px;
-    color: #4a5568;
+    font-weight: bold;
+    margin: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
 }
 
-.no-employees {
-    text-align: center;
-    padding: 40px;
-    font-size: 18px;
-    color: #718096;
-    grid-column: 1 / -1;
+.system-message.success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #34d399;
+}
+
+.system-message.error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #f87171;
+}
+
+.system-message.info {
+    background-color: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #60a5fa;
+}
+
+/* تحسينات الوصول */
+:focus-visible {
+    outline: 2px solid #4299e1;
+    outline-offset: 2px;
+}
+
+/* تخصيص شريط التمرير */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* تأثيرات التحميل */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* تحسينات الطباعة */
+@media print {
+    .app-container {
+        display: block;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
 }

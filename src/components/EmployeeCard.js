@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import "./EmployeeCard.css";
 
-const EmployeeCard = ({ employee }) => {
+const EmployeeCard = ({ employee, onEdit, onDelete }) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   // دالة لتنزيل ملف PDF من Base64
   const downloadPDF = () => {
     if (employee.cvBase64) {
       try {
-        // استخراج نوع الملف من Base64
         const base64Parts = employee.cvBase64.split(';');
         const mimeType = base64Parts[0].split(':')[1];
         let extension = 'pdf';
@@ -19,7 +20,6 @@ const EmployeeCard = ({ employee }) => {
           extension = 'docx';
         }
         
-        // تحويل Base64 إلى blob
         const byteString = atob(employee.cvBase64.split(',')[1]);
         const ab = new ArrayBuffer(byteString.length);
         const ia = new Uint8Array(ab);
@@ -31,7 +31,6 @@ const EmployeeCard = ({ employee }) => {
         const blob = new Blob([ab], { type: mimeType });
         const url = window.URL.createObjectURL(blob);
         
-        // إنشاء رابط للتنزيل
         const link = document.createElement('a');
         link.href = url;
         link.download = `سيرة-ذاتية-${employee.name.replace(/\s+/g, '-')}.${extension}`;
@@ -39,7 +38,6 @@ const EmployeeCard = ({ employee }) => {
         link.click();
         document.body.removeChild(link);
         
-        // تحرير الذاكرة
         window.URL.revokeObjectURL(url);
       } catch (error) {
         console.error('خطأ في تنزيل الملف:', error);
@@ -51,7 +49,6 @@ const EmployeeCard = ({ employee }) => {
   // دالة لعرض PDF في نافذة جديدة
   const viewPDF = () => {
     if (employee.cvBase64) {
-      // إنشاء صفحة HTML لعرض PDF
       const pdfWindow = window.open('', '_blank');
       pdfWindow.document.write(`
         <!DOCTYPE html>
@@ -166,13 +163,67 @@ const EmployeeCard = ({ employee }) => {
       `);
       pdfWindow.document.close();
     } else if (employee.cvURL) {
-      // إذا كان رابط خارجي
       window.open(employee.cvURL, '_blank');
     }
   };
 
+  const handleEdit = () => {
+    if (onEdit) {
+      onEdit(employee);
+    }
+  };
+
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(employee.id);
+    }
+    setShowDeleteConfirm(false);
+  };
+
   return (
     <div className="employee-card">
+      {/* أزرار التعديل والحذف - تظهر عند التمرير */}
+      <div className="employee-actions-overlay">
+        <div className="actions-menu">
+          <button 
+            className="action-btn edit-btn"
+            onClick={handleEdit}
+            title="تعديل بيانات الموظف"
+          >
+            ✏️ تعديل
+          </button>
+          <button 
+            className="action-btn delete-btn"
+            onClick={() => setShowDeleteConfirm(true)}
+            title="حذف الموظف"
+          >
+            🗑️ حذف
+          </button>
+        </div>
+      </div>
+
+      {showDeleteConfirm && (
+        <div className="delete-confirm-modal">
+          <div className="confirm-box">
+            <p>هل أنت متأكد من حذف الموظف <strong>{employee.name}</strong>؟</p>
+            <div className="confirm-actions">
+              <button 
+                className="confirm-btn delete-confirm-btn"
+                onClick={handleDelete}
+              >
+                نعم، احذف
+              </button>
+              <button 
+                className="confirm-btn cancel-btn"
+                onClick={() => setShowDeleteConfirm(false)}
+              >
+                إلغاء
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="employee-image">
         <img
           src={employee.photoBase64 || employee.photoURL || 'https://via.placeholder.com/150'}

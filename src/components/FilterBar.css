@@ -1,3 +1,6 @@
+/* ===========================================
+   أنماط شريط التصفية
+   =========================================== */
 .filter-bar {
   background: white;
   padding: 1.5rem;
@@ -43,6 +46,7 @@
   border-color: #4299e1;
 }
 
+/* تصميم متجاوب */
 @media (max-width: 768px) {
   .department-filters {
     justify-content: flex-start;
