@@ -1,3 +1,4 @@
+// Firebase v9 modular syntax
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -11,5 +12,8 @@ const firebaseConfig = {
   measurementId: "G-RRL1YJT5JT"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const db = getFirestore(app);
+
+export { db };

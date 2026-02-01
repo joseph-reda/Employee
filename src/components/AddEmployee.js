@@ -54,7 +54,6 @@ const AddEmployee = ({ onEmployeeAdded }) => {
     });
   };
 
-  // دالة handleSubmit المكتملة
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,17 +61,14 @@ const AddEmployee = ({ onEmployeeAdded }) => {
       let photoBase64 = "";
       let cvBase64 = "";
 
-      // تحويل الصورة إلى Base64
       if (formData.photo) {
         photoBase64 = await convertToBase64(formData.photo);
       }
 
-      // تحويل ملف PDF إلى Base64
       if (formData.cv) {
         cvBase64 = await convertToBase64(formData.cv);
       }
 
-      // حفظ في Firestore
       const employeeData = {
         name: formData.name,
         age: parseInt(formData.age),
@@ -83,13 +79,10 @@ const AddEmployee = ({ onEmployeeAdded }) => {
         createdAt: new Date(),
       };
 
-      // تمت إزالة تحذير no-unused-vars
       await addDoc(collection(db, "employees"), employeeData);
       
-      // إظهار رسالة نجاح
-      alert('✅ تم إضافة الموظف بنجاح!');
+      alert("✅ تم إضافة الموظف بنجاح!");
       
-      // إعادة تعيين النموذج
       setFormData({
         name: "",
         age: "",
@@ -99,18 +92,15 @@ const AddEmployee = ({ onEmployeeAdded }) => {
         cv: null,
       });
 
-      // إعادة تعيين حقول الملفات
       document.getElementById("photo-input").value = "";
       document.getElementById("cv-input").value = "";
 
-      // إعلام المكون الأب بالتحديث
       if (onEmployeeAdded) {
         onEmployeeAdded();
       }
-
     } catch (error) {
       console.error("Error adding employee:", error);
-      alert('❌ حدث خطأ أثناء إضافة الموظف');
+      alert("❌ حدث خطأ أثناء إضافة الموظف");
     }
   };
 
