@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import EmployeeList from "./components/EmployeeList";
+import AddEmployee from "./components/AddEmployee";
+import "./App.css";
 
 function App() {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleEmployeeAdded = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <div className="app-container">
+        <div className="main-content">
+          <EmployeeList key={refreshKey} />
+        </div>
+        <div className="sidebar">
+          <AddEmployee onEmployeeAdded={handleEmployeeAdded} />
+        </div>
+      </div>
     </div>
   );
 }

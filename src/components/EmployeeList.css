@@ -1,0 +1,27 @@
+
+.employee-list-container {
+  padding: 1rem 0;
+}
+
+.employees-count {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #4a5568;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-align: right;
+}
+
+.employee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .employee-grid {
+    grid-template-columns: 1fr;
+  }
+}
