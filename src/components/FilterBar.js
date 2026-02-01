@@ -2,17 +2,17 @@ import React from "react";
 import "./FilterBar.css";
 
 const departments = [
-  "جميع الأقسام",
-  "مدني",
-  "معماري",
-  "مساحة",
-  "كهرباء",
-  "ميكانيكة",
+  "All Departments",
+  "Qc",
+  "Survey",
+  "Electrical",
+  "Mechanical",
   "DC",
   "HR",
-  "محاسبين",
-  "سيفتي",
-  "مكتب فني",
+  "Accountants",
+  "Safety",
+  "Shop Drawing",
+  "Executive Engineer",
   "QS",
   "Planning",
 ];
