@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
+<<<<<<< HEAD
 import { getArabicDepartment } from "../constants/departments";
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 import EmployeeCard from "./EmployeeCard";
 import FilterBar from "./FilterBar";
 import "./EmployeeList.css";
@@ -9,6 +12,7 @@ import "./EmployeeList.css";
 const EmployeeList = ({ onEditEmployee }) => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
+<<<<<<< HEAD
   const [selectedDepartment, setSelectedDepartment] = useState("All Departments");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
@@ -18,12 +22,17 @@ const EmployeeList = ({ onEditEmployee }) => {
     averageAge: 0,
     averageExperience: 0
   });
+=======
+  const [selectedDepartment, setSelectedDepartment] = useState("جميع الأقسام");
+  const [loading, setLoading] = useState(true);
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 
   useEffect(() => {
     fetchEmployees();
   }, []);
 
   useEffect(() => {
+<<<<<<< HEAD
     filterAndSortEmployees();
     calculateStats();
   }, [employees, selectedDepartment, searchTerm, sortBy]);
@@ -50,11 +59,35 @@ const EmployeeList = ({ onEditEmployee }) => {
     } catch (error) {
       console.error("Error fetching employees:", error);
       alert("❌ حدث خطأ في جلب بيانات الموظفين");
+=======
+    if (selectedDepartment === "جميع الأقسام") {
+      setFilteredEmployees(employees);
+    } else {
+      const filtered = employees.filter(
+        (employee) => employee.department === selectedDepartment
+      );
+      setFilteredEmployees(filtered);
+    }
+  }, [selectedDepartment, employees]);
+
+  const fetchEmployees = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "employees"));
+      const employeesList = [];
+      querySnapshot.forEach((doc) => {
+        employeesList.push({ id: doc.id, ...doc.data() });
+      });
+      setEmployees(employeesList);
+      setFilteredEmployees(employeesList);
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
     } finally {
       setLoading(false);
     }
   };
 
+<<<<<<< HEAD
   const filterAndSortEmployees = () => {
     let filtered = [...employees];
 
@@ -125,6 +158,8 @@ const EmployeeList = ({ onEditEmployee }) => {
     setSortBy(sortField);
   };
 
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
   const handleEdit = (employee) => {
     if (onEditEmployee) {
       onEditEmployee(employee);
@@ -144,6 +179,7 @@ const EmployeeList = ({ onEditEmployee }) => {
     }
   };
 
+<<<<<<< HEAD
   const handleExportData = () => {
     const dataToExport = filteredEmployees.map(emp => ({
       "الاسم": emp.name,
@@ -173,10 +209,15 @@ const EmployeeList = ({ onEditEmployee }) => {
         <p>جاري تحميل بيانات الموظفين...</p>
       </div>
     );
+=======
+  if (loading) {
+    return <div className="loading">جاري تحميل بيانات الموظفين...</div>;
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
   }
 
   return (
     <div className="employee-list-container">
+<<<<<<< HEAD
       {/* شريط الإحصائيات والإجراءات */}
       <div className="stats-actions-bar">
         <div className="stats-container">
@@ -232,20 +273,37 @@ const EmployeeList = ({ onEditEmployee }) => {
       
       {/* قائمة الموظفين */}
       <div className="employee-grid fade-in">
+=======
+      <FilterBar 
+        selectedDepartment={selectedDepartment}
+        onFilterChange={setSelectedDepartment}
+      />
+      
+      <div className="employees-count">
+        عدد الموظفين المعروضين: {filteredEmployees.length}
+      </div>
+      
+      <div className="employee-grid">
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
         {filteredEmployees.length > 0 ? (
           filteredEmployees.map((employee) => (
             <EmployeeCard 
               key={employee.id} 
+<<<<<<< HEAD
               employee={{
                 ...employee,
                 department: employee.displayDepartment // استخدام النسخة المعروضة
               }}
+=======
+              employee={employee}
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
               onEdit={handleEdit}
               onDelete={handleDelete}
             />
           ))
         ) : (
           <div className="no-employees">
+<<<<<<< HEAD
             <div className="no-data-icon">📋</div>
             <h3>لا يوجد موظفين</h3>
             <p>
@@ -264,6 +322,9 @@ const EmployeeList = ({ onEditEmployee }) => {
                 مسح البحث
               </button>
             )}
+=======
+            لا يوجد موظفين في هذا القسم
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
           </div>
         )}
       </div>

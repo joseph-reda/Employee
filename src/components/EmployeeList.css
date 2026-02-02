@@ -5,6 +5,7 @@
   padding: 1rem 0;
 }
 
+<<<<<<< HEAD
 /* شريط الإحصائيات والإجراءات */
 .stats-actions-bar {
   background: white;
@@ -91,11 +92,14 @@
 }
 
 /* عدد الموظفين المعروضين */
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 .employees-count {
   background: white;
   padding: 1rem 1.5rem;
   border-radius: 12px;
   margin-bottom: 1.5rem;
+<<<<<<< HEAD
   font-size: 1rem;
   color: #4a5568;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -121,10 +125,22 @@
 .employee-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+=======
+  font-weight: 600;
+  color: #4a5568;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-align: right;
+}
+
+.employee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
   gap: 1.5rem;
 }
 
 /* رسائل الحالة */
+<<<<<<< HEAD
 .loading-container {
   text-align: center;
   padding: 60px 20px;
@@ -151,10 +167,19 @@
 .loading-container p {
   color: #4a5568;
   font-size: 16px;
+=======
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #4a5568;
+  grid-column: 1 / -1;
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 }
 
 .no-employees {
   text-align: center;
+<<<<<<< HEAD
   padding: 60px 20px;
   background: white;
   border-radius: 12px;
@@ -196,6 +221,26 @@
 .clear-search-btn:hover {
   background: #cbd5e0;
   transform: translateY(-2px);
+=======
+  padding: 40px;
+  font-size: 18px;
+  color: #718096;
+  grid-column: 1 / -1;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+  .employee-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .employees-count {
+    text-align: center;
+  }
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 }
 
 /* تأثيرات للقائمة */
@@ -214,6 +259,7 @@
   }
 }
 
+<<<<<<< HEAD
 /* تصميم متجاوب */
 @media (max-width: 768px) {
   .employee-grid {
@@ -256,6 +302,12 @@
   .filter-bar,
   .employees-count,
   .stats-actions-bar {
+=======
+/* تحسينات للطباعة */
+@media print {
+  .filter-bar,
+  .employees-count {
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
     display: none !important;
   }
   

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { DEPARTMENTS, ALL_DEPARTMENTS, getArabicDepartment } from "../constants/departments";
 import "./FilterBar.css";
@@ -70,6 +71,39 @@ const FilterBar = ({ selectedDepartment, onFilterChange, onSearch, onSort }) => 
             title={dept === ALL_DEPARTMENTS.en ? "عرض جميع الموظفين" : getArabicDepartment(dept)}
           >
             {dept === ALL_DEPARTMENTS.en ? "جميع الأقسام" : dept}
+=======
+import React from "react";
+import "./FilterBar.css";
+
+const departments = [
+  "All Departments",
+  "Qc",
+  "Survey",
+  "Electrical",
+  "Mechanical",
+  "DC",
+  "HR",
+  "Accountants",
+  "Safety",
+  "Shop Drawing",
+  "Executive Engineer",
+  "QS",
+  "Planning",
+];
+
+const FilterBar = ({ selectedDepartment, onFilterChange }) => {
+  return (
+    <div className="filter-bar">
+      <h3>تصفية حسب القسم:</h3>
+      <div className="department-filters">
+        {departments.map((dept, index) => (
+          <button
+            key={index}
+            className={`filter-btn ${selectedDepartment === dept ? "active" : ""}`}
+            onClick={() => onFilterChange(dept)}
+          >
+            {dept}
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
           </button>
         ))}
       </div>
@@ -77,4 +111,8 @@ const FilterBar = ({ selectedDepartment, onFilterChange, onSearch, onSort }) => 
   );
 };
 
+<<<<<<< HEAD
 export default FilterBar;
+=======
+export default FilterBar;
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a

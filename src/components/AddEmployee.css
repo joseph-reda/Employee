@@ -258,6 +258,7 @@ select:valid {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+<<<<<<< HEAD
 }
 
 
@@ -432,4 +433,6 @@ select:not([required]):valid {
   border-radius: 8px;
   border: 2px solid #e2e8f0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 }

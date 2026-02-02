@@ -3,6 +3,7 @@ import "./EmployeeCard.css";
 
 const EmployeeCard = ({ employee, onEdit, onDelete }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState(false);
 
   // دالة لإنشاء أفاتار افتراضي - معدلة لمعالجة الحالات الفارغة
@@ -31,16 +32,25 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
     
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   };
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 
   // دالة لتنزيل ملف PDF من Base64
   const downloadPDF = () => {
     if (employee.cvBase64) {
+<<<<<<< HEAD
       setIsLoading(true);
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
       try {
         const base64Parts = employee.cvBase64.split(';');
         const mimeType = base64Parts[0].split(':')[1];
         let extension = 'pdf';
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
         if (mimeType === 'application/pdf') {
           extension = 'pdf';
         } else if (mimeType === 'application/msword') {
@@ -48,6 +58,7 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
         } else if (mimeType.includes('wordprocessingml')) {
           extension = 'docx';
         }
+<<<<<<< HEAD
 
         const byteString = atob(employee.cvBase64.split(',')[1]);
         const ab = new ArrayBuffer(byteString.length);
@@ -60,19 +71,40 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
         const blob = new Blob([ab], { type: mimeType });
         const url = window.URL.createObjectURL(blob);
 
+=======
+        
+        const byteString = atob(employee.cvBase64.split(',')[1]);
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        
+        const blob = new Blob([ab], { type: mimeType });
+        const url = window.URL.createObjectURL(blob);
+        
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
         const link = document.createElement('a');
         link.href = url;
         link.download = `سيرة-ذاتية-${employee.name.replace(/\s+/g, '-')}.${extension}`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
         window.URL.revokeObjectURL(url);
       } catch (error) {
         console.error('خطأ في تنزيل الملف:', error);
         alert('حدث خطأ أثناء تنزيل الملف');
+<<<<<<< HEAD
       } finally {
         setIsLoading(false);
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
       }
     }
   };
@@ -92,7 +124,10 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
               padding: 20px;
               font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
               background: #f5f7fa;
+<<<<<<< HEAD
               direction: rtl;
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
             }
             .container {
               max-width: 900px;
@@ -162,7 +197,10 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
               <h2>📄 السيرة الذاتية</h2>
               <p><strong>الاسم:</strong> ${employee.name}</p>
               <p><strong>القسم:</strong> ${employee.department}</p>
+<<<<<<< HEAD
               <p><strong>السن:</strong> ${employee.age}</p>
+=======
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
               <p><strong>سنوات الخبرة:</strong> ${employee.experience}</p>
             </div>
             
@@ -215,6 +253,7 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
 
   return (
     <div className="employee-card">
+<<<<<<< HEAD
       {/* مؤشر التحميل */}
       {isLoading && (
         <div className="loading-indicator">
@@ -239,6 +278,22 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
             onClick={() => setShowDeleteConfirm(true)}
             title="حذف الموظف"
             disabled={isLoading}
+=======
+      {/* أزرار التعديل والحذف - تظهر عند التمرير */}
+      <div className="employee-actions-overlay">
+        <div className="actions-menu">
+          <button 
+            className="action-btn edit-btn"
+            onClick={handleEdit}
+            title="تعديل بيانات الموظف"
+          >
+            ✏️ تعديل
+          </button>
+          <button 
+            className="action-btn delete-btn"
+            onClick={() => setShowDeleteConfirm(true)}
+            title="حذف الموظف"
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
           >
             🗑️ حذف
           </button>
@@ -249,17 +304,26 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
         <div className="delete-confirm-modal">
           <div className="confirm-box">
             <p>هل أنت متأكد من حذف الموظف <strong>{employee.name}</strong>؟</p>
+<<<<<<< HEAD
             <p style={{ fontSize: '14px', color: '#718096', marginTop: '10px' }}>
               هذا الإجراء لا يمكن التراجع عنه
             </p>
             <div className="confirm-actions">
               <button
+=======
+            <div className="confirm-actions">
+              <button 
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
                 className="confirm-btn delete-confirm-btn"
                 onClick={handleDelete}
               >
                 نعم، احذف
               </button>
+<<<<<<< HEAD
               <button
+=======
+              <button 
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
                 className="confirm-btn cancel-btn"
                 onClick={() => setShowDeleteConfirm(false)}
               >
@@ -272,6 +336,7 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
 
       <div className="employee-image">
         <img
+<<<<<<< HEAD
           src={employee.photoBase64 || employee.photoURL || getDefaultAvatar(employee.name)}
           alt={employee.name}
           onError={(e) => {
@@ -287,22 +352,48 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
 
       <div className="employee-info">
         <h3 className="employee-name">{employee.name || "اسم غير معروف"}</h3>
+=======
+          src={employee.photoBase64 || employee.photoURL || 'https://via.placeholder.com/150'}
+          alt={employee.name}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "https://via.placeholder.com/150";
+          }}
+        />
+      </div>
+
+      <div className="employee-info">
+        <h3 className="employee-name">{employee.name}</h3>
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 
         <div className="employee-details">
           <div className="detail-item">
             <span className="detail-label">السن:</span>
+<<<<<<< HEAD
             <span className="detail-value">{employee.age || "غير محدد"} سنة</span>
+=======
+            <span className="detail-value">{employee.age}</span>
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
           </div>
 
           <div className="detail-item">
             <span className="detail-label">الخبرة:</span>
+<<<<<<< HEAD
             <span className="detail-value">{employee.experience || "0"} سنوات</span>
+=======
+            <span className="detail-value">{employee.experience} سنوات</span>
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
           </div>
 
           <div className="detail-item">
             <span className="detail-label">القسم:</span>
+<<<<<<< HEAD
             <span className={`department-badge department-${(employee.department || "غير محدد").replace(/\s+/g, '-').toLowerCase()}`}>
               {employee.department || "غير محدد"}
+=======
+            <span className={`department-badge ${employee.department}`}>
+              {employee.department}
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
             </span>
           </div>
         </div>
@@ -312,18 +403,30 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
             <button
               onClick={viewPDF}
               className="cv-button view-btn"
+<<<<<<< HEAD
               disabled={isLoading}
             >
               👁️ عرض السيرة الذاتية
             </button>
 
+=======
+            >
+              👁️ عرض السيرة الذاتية
+            </button>
+            
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
             {employee.cvBase64 && (
               <button
                 onClick={downloadPDF}
                 className="cv-button download-btn"
+<<<<<<< HEAD
                 disabled={isLoading}
               >
                 {isLoading ? '⬇️ جاري التنزيل...' : '⬇️ تنزيل السيرة الذاتية'}
+=======
+              >
+                ⬇️ تنزيل السيرة الذاتية
+>>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
               </button>
             )}
           </div>
