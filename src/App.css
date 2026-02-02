@@ -26,11 +26,7 @@ body {
     flex: 1;
     padding: 20px;
     gap: 20px;
-<<<<<<< HEAD
     max-width: 1800px;
-=======
-    max-width: 1400px;
->>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
     margin: 0 auto;
     width: 100%;
 }
@@ -135,12 +131,7 @@ body {
     body {
         background: white;
     }
-<<<<<<< HEAD
 }
-
-
-
-/* في نهاية ملف App.css */
 
 /* تنسيق الأقسام في الكروت */
 [class*="department-badge"] {
@@ -184,6 +175,4 @@ body {
   .employee-grid {
     grid-template-columns: repeat(4, 1fr);
   }
-=======
->>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 }

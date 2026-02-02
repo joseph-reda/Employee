@@ -5,7 +5,6 @@
   padding: 1rem 0;
 }
 
-<<<<<<< HEAD
 /* شريط الإحصائيات والإجراءات */
 .stats-actions-bar {
   background: white;
@@ -74,6 +73,7 @@
 .export-btn:hover:not(:disabled) {
   background: #2f855a;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(56, 161, 105, 0.2);
 }
 
 .export-btn:disabled {
@@ -89,17 +89,15 @@
 .refresh-btn:hover {
   background: #3182ce;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(66, 153, 225, 0.2);
 }
 
 /* عدد الموظفين المعروضين */
-=======
->>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 .employees-count {
   background: white;
   padding: 1rem 1.5rem;
   border-radius: 12px;
   margin-bottom: 1.5rem;
-<<<<<<< HEAD
   font-size: 1rem;
   color: #4a5568;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -119,34 +117,26 @@
   color: #718096;
   font-size: 0.9rem;
   font-style: italic;
+  padding: 2px 8px;
+  background: #f7fafc;
+  border-radius: 4px;
 }
 
 /* قائمة الموظفين */
 .employee-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-=======
-  font-weight: 600;
-  color: #4a5568;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  text-align: right;
-}
-
-.employee-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
->>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
   gap: 1.5rem;
 }
 
 /* رسائل الحالة */
-<<<<<<< HEAD
 .loading-container {
   text-align: center;
   padding: 60px 20px;
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin: 20px 0;
 }
 
 .loading-spinner {
@@ -167,19 +157,11 @@
 .loading-container p {
   color: #4a5568;
   font-size: 16px;
-=======
-.loading {
-  text-align: center;
-  padding: 40px;
-  font-size: 18px;
-  color: #4a5568;
-  grid-column: 1 / -1;
->>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
+  font-weight: 500;
 }
 
 .no-employees {
   text-align: center;
-<<<<<<< HEAD
   padding: 60px 20px;
   background: white;
   border-radius: 12px;
@@ -197,6 +179,7 @@
   color: #2d3748;
   margin-bottom: 10px;
   font-size: 1.4rem;
+  font-weight: 600;
 }
 
 .no-employees p {
@@ -208,39 +191,21 @@
 }
 
 .clear-search-btn {
-  padding: 8px 20px;
+  padding: 10px 25px;
   background: #e2e8f0;
   color: #4a5568;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
 .clear-search-btn:hover {
   background: #cbd5e0;
   transform: translateY(-2px);
-=======
-  padding: 40px;
-  font-size: 18px;
-  color: #718096;
-  grid-column: 1 / -1;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* تصميم متجاوب */
-@media (max-width: 768px) {
-  .employee-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .employees-count {
-    text-align: center;
-  }
->>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
 }
 
 /* تأثيرات للقائمة */
@@ -259,7 +224,6 @@
   }
 }
 
-<<<<<<< HEAD
 /* تصميم متجاوب */
 @media (max-width: 768px) {
   .employee-grid {
@@ -269,6 +233,7 @@
   .stats-actions-bar {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
   }
   
   .stats-container {
@@ -277,11 +242,21 @@
   
   .actions-container {
     justify-content: center;
+    flex-wrap: wrap;
   }
   
   .employees-count {
     text-align: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .search-info {
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-top: 5px;
   }
 }
 
@@ -289,11 +264,28 @@
   .stats-container {
     flex-direction: column;
     width: 100%;
+    gap: 10px;
   }
   
   .stat-item {
     width: 100%;
     min-width: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 15px;
+  }
+  
+  .stat-label {
+    margin-bottom: 0;
+  }
+  
+  .actions-container {
+    width: 100%;
+  }
+  
+  .export-btn, .refresh-btn {
+    flex: 1;
+    justify-content: center;
   }
 }
 
@@ -302,17 +294,59 @@
   .filter-bar,
   .employees-count,
   .stats-actions-bar {
-=======
-/* تحسينات للطباعة */
-@media print {
-  .filter-bar,
-  .employees-count {
->>>>>>> 479494612b23f6b93d78889813b1d13234e4663a
     display: none !important;
   }
   
   .employee-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+  }
+  
+  .employee-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+  }
+}
+
+/* تحسينات للظلام */
+@media (prefers-color-scheme: dark) {
+  .stats-actions-bar,
+  .employees-count,
+  .loading-container,
+  .no-employees {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  
+  .stat-item {
+    background: #4a5568;
+  }
+  
+  .stat-label {
+    color: #a0aec0;
+  }
+  
+  .stat-value {
+    color: #e2e8f0;
+  }
+  
+  .search-info {
+    background: #4a5568;
+    color: #a0aec0;
+  }
+  
+  .clear-search-btn {
+    background: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .clear-search-btn:hover {
+    background: #718096;
+  }
+  
+  .loading-spinner {
+    border-color: #4a5568;
+    border-top-color: #4299e1;
   }
 }
