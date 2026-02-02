@@ -1,0 +1,435 @@
+/* ===========================================
+   أنماط نموذج إضافة/تعديل الموظف
+   =========================================== */
+.add-employee-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 20px;
+}
+
+.add-employee-container h2 {
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f7fafc;
+}
+
+.employee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: #4a5568;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.8rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.form-group input[type="file"] {
+  padding: 0.5rem;
+  border: 2px dashed #e2e8f0;
+  background: #f7fafc;
+  cursor: pointer;
+}
+
+.form-group input[type="file"]:hover {
+  border-color: #cbd5e0;
+  background: #edf2f7;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 5px;
+  color: #38a169;
+  font-weight: 500;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.form-group .file-info {
+  color: #718096;
+  font-size: 0.85rem;
+}
+
+/* معاينة الصورة */
+.photo-preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.photo-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+}
+
+.photo-preview small {
+  display: block;
+  margin-top: 5px;
+  color: #718096;
+  font-size: 0.8rem;
+}
+
+/* أزرار النموذج */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, #2f855a 0%, #276749 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #e2e8f0;
+  color: #4a5568;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cancel-btn:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+}
+
+.cancel-btn:active {
+  transform: translateY(0);
+}
+
+/* رسائل النموذج */
+.form-message {
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.form-message.success {
+  background: #c6f6d5;
+  color: #22543d;
+  border: 1px solid #9ae6b4;
+}
+
+.form-message.error {
+  background: #fed7d7;
+  color: #742a2a;
+  border: 1px solid #fc8181;
+}
+
+.form-message.warning {
+  background: #feebc8;
+  color: #744210;
+  border: 1px solid #fbd38d;
+}
+
+/* حالات خاصة للنموذج */
+.add-employee-container.editing {
+  border-left: 4px solid #4299e1;
+}
+
+.add-employee-container.adding {
+  border-left: 4px solid #38a169;
+}
+
+/* تلميحات النموذج */
+.form-hint {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 5px;
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+  .add-employee-container {
+    position: static;
+    margin-bottom: 20px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .submit-btn,
+  .cancel-btn {
+    width: 100%;
+  }
+}
+
+/* رسائل التحقق */
+input:invalid,
+select:invalid {
+  border-color: #fc8181;
+}
+
+input:valid,
+select:valid {
+  border-color: #9ae6b4;
+}
+
+/* تحسينات الوصول */
+.form-group input:focus-visible,
+.form-group select:focus-visible {
+  outline: 2px solid #4299e1;
+  outline-offset: 2px;
+}
+
+/* حالة التحميل */
+.submit-btn.loading {
+  position: relative;
+  color: transparent;
+}
+
+.submit-btn.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+
+
+/* أضف في نهاية الملف */
+
+/* إشعارات النموذج */
+.form-notice {
+  margin-top: 15px;
+  padding: 10px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 1px dashed #e2e8f0;
+  text-align: center;
+}
+
+.form-notice small {
+  display: block;
+  color: #718096;
+  font-size: 0.8rem;
+  margin: 3px 0;
+}
+
+/* تعديل تلميحات الحقول */
+.form-hint {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 5px;
+  display: block;
+}
+
+/* إزالة علامة required من الحقول غير الإجبارية */
+.form-group:not(:first-child) label::after {
+  content: " (اختياري)";
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+.form-group:first-child label::after {
+  content: " *";
+  color: #f56565;
+}
+
+/* تحسين أزرار الإجراءات */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-btn, .cancel-btn {
+  flex: 1;
+}
+
+.cancel-btn {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.cancel-btn:hover {
+  background: #cbd5e0;
+}
+
+/* إزالة حدود الحقول الصالحة/غير الصالحة */
+input:not([required]):invalid,
+select:not([required]):invalid {
+  border-color: #e2e8f0;
+}
+
+input:not([required]):valid,
+select:not([required]):valid {
+  border-color: #e2e8f0;
+}
+
+/* حقل الاسم فقط إجباري */
+#name:invalid {
+  border-color: #fc8181;
+}
+
+#name:valid {
+  border-color: #9ae6b4;
+}
+
+
+
+
+
+/* أضف في نهاية الملف */
+
+/* إشعارات النموذج */
+.form-notice {
+  margin-top: 15px;
+  padding: 10px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 1px dashed #e2e8f0;
+  text-align: center;
+}
+
+.form-notice small {
+  display: block;
+  color: #718096;
+  font-size: 0.8rem;
+  margin: 3px 0;
+}
+
+/* تعديل تلميحات الحقول */
+.form-hint {
+  font-size: 0.85rem;
+  color: #718096;
+  margin-top: 5px;
+  display: block;
+}
+
+/* إزالة علامة required من الحقول غير الإجبارية */
+.form-group:not(:first-child) label::after {
+  content: " (اختياري)";
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+.form-group:first-child label::after {
+  content: " *";
+  color: #f56565;
+}
+
+/* تحسين أزرار الإجراءات */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.submit-btn, .cancel-btn {
+  flex: 1;
+}
+
+.cancel-btn {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.cancel-btn:hover {
+  background: #cbd5e0;
+}
+
+/* إزالة حدود الحقول الصالحة/غير الصالحة */
+input:not([required]):invalid,
+select:not([required]):invalid {
+  border-color: #e2e8f0;
+}
+
+input:not([required]):valid,
+select:not([required]):valid {
+  border-color: #e2e8f0;
+}
+
+/* حقل الاسم فقط إجباري */
+#name:invalid {
+  border-color: #fc8181;
+}
+
+#name:valid {
+  border-color: #9ae6b4;
+}
+
+/* تحسين عرض الصور */
+.photo-preview img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

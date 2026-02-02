@@ -1,0 +1,266 @@
+/* ===========================================
+   أنماط قائمة الموظفين
+   =========================================== */
+.employee-list-container {
+  padding: 1rem 0;
+}
+
+/* شريط الإحصائيات والإجراءات */
+.stats-actions-bar {
+  background: white;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stats-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 15px;
+  background: #f7fafc;
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.stat-label {
+  color: #718096;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  color: #2d3748;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.actions-container {
+  display: flex;
+  gap: 10px;
+}
+
+.export-btn, .refresh-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.export-btn {
+  background: #38a169;
+  color: white;
+}
+
+.export-btn:hover:not(:disabled) {
+  background: #2f855a;
+  transform: translateY(-2px);
+}
+
+.export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.refresh-btn {
+  background: #4299e1;
+  color: white;
+}
+
+.refresh-btn:hover {
+  background: #3182ce;
+  transform: translateY(-2px);
+}
+
+/* عدد الموظفين المعروضين */
+.employees-count {
+  background: white;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: #4a5568;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.employees-count strong {
+  color: #2d3748;
+  font-size: 1.2rem;
+}
+
+.search-info {
+  color: #718096;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* قائمة الموظفين */
+.employee-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* رسائل الحالة */
+.loading-container {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #4299e1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  color: #4a5568;
+  font-size: 16px;
+}
+
+.no-employees {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  grid-column: 1 / -1;
+}
+
+.no-data-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.no-employees h3 {
+  color: #2d3748;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.no-employees p {
+  color: #718096;
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto 20px;
+}
+
+.clear-search-btn {
+  padding: 8px 20px;
+  background: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-search-btn:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+}
+
+/* تأثيرات للقائمة */
+.employee-grid.fade-in {
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+  .employee-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .stats-container {
+    justify-content: center;
+  }
+  
+  .actions-container {
+    justify-content: center;
+  }
+  
+  .employees-count {
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-container {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .stat-item {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+/* تحسينات للطباعة */
+@media print {
+  .filter-bar,
+  .employees-count,
+  .stats-actions-bar {
+    display: none !important;
+  }
+  
+  .employee-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+}
