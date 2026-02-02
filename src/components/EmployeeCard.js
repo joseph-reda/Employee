@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./EmployeeCard.css";
 
 const EmployeeCard = ({ employee, onEdit, onDelete }) => {
+  const navigate = useNavigate();
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // دالة لإنشاء أفاتار افتراضي - معدلة لمعالجة الحالات الفارغة
+  // دالة لإنشاء أفاتار افتراضي
   const getDefaultAvatar = (name) => {
     if (!name || name.trim() === "") {
       name = "Unknown";
@@ -200,12 +202,19 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
     }
   };
 
+  // دالة للانتقال إلى صفحة عرض CV كاملة
+  const handleViewCVPage = () => {
+    navigate(`/cv/${employee.id}`);
+  };
+
+  // دالة لتعديل الموظف
   const handleEdit = () => {
     if (onEdit) {
       onEdit(employee);
     }
   };
 
+  // دالة لحذف الموظف
   const handleDelete = () => {
     if (onDelete) {
       onDelete(employee.id);
@@ -245,6 +254,7 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
         </div>
       </div>
 
+      {/* نافذة تأكيد الحذف */}
       {showDeleteConfirm && (
         <div className="delete-confirm-modal">
           <div className="confirm-box">
@@ -270,6 +280,7 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
         </div>
       )}
 
+      {/* صورة الموظف */}
       <div className="employee-image">
         <img
           src={employee.photoBase64 || employee.photoURL || getDefaultAvatar(employee.name)}
@@ -281,51 +292,81 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
           loading="lazy"
         />
         <div className="employee-overlay">
-          <span className="department-tag">{employee.department}</span>
+          <span className="department-tag">{employee.department || "غير محدد"}</span>
         </div>
       </div>
 
+      {/* معلومات الموظف */}
       <div className="employee-info">
         <h3 className="employee-name">{employee.name || "اسم غير معروف"}</h3>
 
         <div className="employee-details">
           <div className="detail-item">
             <span className="detail-label">السن:</span>
-            <span className="detail-value">{employee.age || "غير محدد"} سنة</span>
+            <span className="detail-value">
+              {employee.age ? `${employee.age} سنة` : "غير محدد"}
+            </span>
           </div>
 
           <div className="detail-item">
             <span className="detail-label">الخبرة:</span>
-            <span className="detail-value">{employee.experience || "0"} سنوات</span>
+            <span className="detail-value">
+              {employee.experience ? `${employee.experience} سنوات` : "0 سنة"}
+            </span>
           </div>
 
           <div className="detail-item">
             <span className="detail-label">القسم:</span>
-            <span className={`department-badge department-${(employee.department || "غير محدد").replace(/\s+/g, '-').toLowerCase()}`}>
+            <span className={`department-badge department-${(employee.department || "غير-محدد").replace(/\s+/g, '-').toLowerCase()}`}>
               {employee.department || "غير محدد"}
             </span>
           </div>
         </div>
 
-        {(employee.cvBase64 || employee.cvURL) && (
+        {/* أزرار السيرة الذاتية */}
+        {employee.cvBase64 || employee.cvURL ? (
           <div className="cv-actions">
             <button
-              onClick={viewPDF}
-              className="cv-button view-btn"
+              onClick={handleViewCVPage}
+              className="cv-button view-page-btn"
+              title="عرض صفحة السيرة الذاتية الكاملة"
               disabled={isLoading}
             >
-              👁️ عرض السيرة الذاتية
+              📄 صفحة السيرة الذاتية
             </button>
-
-            {employee.cvBase64 && (
+            
+            <div className="cv-secondary-actions">
               <button
-                onClick={downloadPDF}
-                className="cv-button download-btn"
+                onClick={viewPDF}
+                className="cv-button view-btn"
                 disabled={isLoading}
+                title="فتح السيرة الذاتية في نافذة جديدة"
               >
-                {isLoading ? '⬇️ جاري التنزيل...' : '⬇️ تنزيل السيرة الذاتية'}
+                👁️ عرض
               </button>
-            )}
+              
+              {employee.cvBase64 && (
+                <button
+                  onClick={downloadPDF}
+                  className="cv-button download-btn"
+                  disabled={isLoading}
+                  title="تنزيل السيرة الذاتية"
+                >
+                  {isLoading ? '⬇️ جاري...' : '⬇️ تنزيل'}
+                </button>
+              )}
+            </div>
+          </div>
+        ) : (
+          <div className="no-cv-section">
+            <span className="no-cv-message">لا توجد سيرة ذاتية</span>
+            <button
+              onClick={handleEdit}
+              className="add-cv-btn"
+              title="إضافة سيرة ذاتية للموظف"
+            >
+              ➕ إضافة سيرة ذاتية
+            </button>
           </div>
         )}
       </div>
@@ -333,4 +374,4 @@ const EmployeeCard = ({ employee, onEdit, onDelete }) => {
   );
 };
 
-export default EmployeeCard;
+export default EmployeeCard;  

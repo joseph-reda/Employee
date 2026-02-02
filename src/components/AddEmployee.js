@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { collection, addDoc, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
-import { DEPARTMENTS } from "../constants/departments";
 import "./AddEmployee.css";
 
 const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
@@ -18,17 +17,20 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
     name: "",
     age: "",
     experience: "",
-    department: DEPARTMENTS[0].en, // استخدام الإنجليزية
+    department: "",
     photo: null,
     cv: null,
   });
 
+  const [departments, setDepartments] = useState([]);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loadingDepartments, setLoadingDepartments] = useState(true);
 
-  // جلب جميع الأقسام بالإنجليزية فقط
-  const departmentsEnglish = DEPARTMENTS.map(dept => dept.en);
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
 
   useEffect(() => {
     if (employeeToEdit) {
@@ -37,7 +39,7 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
         name: employeeToEdit.name || "",
         age: employeeToEdit.age || "",
         experience: employeeToEdit.experience || "",
-        department: employeeToEdit.department || DEPARTMENTS[0].en,
+        department: employeeToEdit.department || "",
         photo: null,
         cv: null,
       });
@@ -47,18 +49,34 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
       }
     } else {
       setIsEditing(false);
-      // إعادة التعيين عند عدم التعديل
       setFormData({
         name: "",
         age: "",
         experience: "",
-        department: DEPARTMENTS[0].en,
+        department: "",
         photo: null,
         cv: null,
       });
       setPhotoPreview(null);
     }
   }, [employeeToEdit]);
+
+// في AddEmployee.js، تأكد من أن fetchDepartments تستخدم Firestore
+const fetchDepartments = async () => {
+  try {
+    setLoadingDepartments(true);
+    const querySnapshot = await getDocs(collection(db, "departments"));
+    const deptList = [];
+    querySnapshot.forEach((doc) => {
+      deptList.push({ id: doc.id, ...doc.data() });
+    });
+    setDepartments(deptList);
+  } catch (error) {
+    console.error("Error fetching departments:", error);
+  } finally {
+    setLoadingDepartments(false);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -89,7 +107,6 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // التحقق من صحة الاسم فقط (الاسم فقط إجباري)
     if (!formData.name.trim()) {
       alert("الرجاء إدخال اسم الموظف");
       return;
@@ -117,7 +134,7 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
         name: formData.name.trim(),
         age: formData.age ? parseInt(formData.age) : null,
         experience: formData.experience ? parseInt(formData.experience) : null,
-        department: formData.department, // تخزين بالإنجليزية
+        department: formData.department,
         photoBase64: photoBase64,
         cvBase64: cvBase64,
         updatedAt: new Date(),
@@ -152,14 +169,13 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
       name: "",
       age: "",
       experience: "",
-      department: DEPARTMENTS[0].en,
+      department: "",
       photo: null,
       cv: null,
     });
     setPhotoPreview(null);
     setIsEditing(false);
     
-    // إعادة تعيين حقول الملفات
     const photoInput = document.getElementById("photo-input");
     const cvInput = document.getElementById("cv-input");
     if (photoInput) photoInput.value = "";
@@ -183,6 +199,13 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
   return (
     <div className={`add-employee-container ${isEditing ? 'editing' : 'adding'}`}>
       <h2>{isEditing ? "تعديل بيانات الموظف" : "إضافة موظف جديد"}</h2>
+      
+      <div className="department-notice">
+        <small>
+          💡 لإضافة قسم جديد، انتقل إلى <strong>إدارة الأقسام</strong>
+        </small>
+      </div>
+      
       <form onSubmit={handleSubmit} className="employee-form">
         <div className="form-group">
           <label htmlFor="name">اسم الموظف: *</label>
@@ -233,20 +256,32 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
 
         <div className="form-group">
           <label htmlFor="department">القسم:</label>
-          <select
-            id="department"
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-            disabled={isSubmitting}
-          >
-            {departmentsEnglish.map((dept, index) => (
-              <option key={index} value={dept}>
-                {dept}
-              </option>
-            ))}
-          </select>
-          <small className="form-hint">اختياري - سيتم اختيار أول قسم افتراضيًا</small>
+          {loadingDepartments ? (
+            <div className="loading-departments">
+              <span>جاري تحميل الأقسام...</span>
+            </div>
+          ) : departments.length === 0 ? (
+            <div className="no-departments">
+              <span>لا توجد أقسام مضافة</span>
+              <small>الرجاء إضافة أقسام أولاً من إدارة الأقسام</small>
+            </div>
+          ) : (
+            <select
+              id="department"
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              disabled={isSubmitting}
+            >
+              <option value="">اختر القسم...</option>
+              {departments.map((dept, index) => (
+                <option key={index} value={dept.en}>
+                  {dept.ar} ({dept.en})
+                </option>
+              ))}
+            </select>
+          )}
+          <small className="form-hint">اختياري - اختر من القائمة</small>
         </div>
 
         <div className="form-group">
@@ -297,7 +332,7 @@ const AddEmployee = ({ onEmployeeAdded, employeeToEdit, onCancelEdit }) => {
           <button 
             type="submit" 
             className={`submit-btn ${isSubmitting ? 'loading' : ''}`}
-            disabled={isSubmitting}
+            disabled={isSubmitting || loadingDepartments}
           >
             {isSubmitting ? (
               <>⏳ جاري الحفظ...</>

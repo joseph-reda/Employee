@@ -1,3 +1,4 @@
+/* index.css - تهيئة إضافية */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,6 +14,30 @@ code {
     monospace;
 }
 
+/* تحسينات للصور */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* تحسينات للأشكال */
+input, button, select, textarea {
+  font-family: inherit;
+}
+
+/* إزالة الافتراضات */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* تحسينات لشاشات اللمس */
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* تحسينات للأداء */
 * {
-  box-sizing: border-box;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }

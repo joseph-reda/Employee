@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
-import { getArabicDepartment } from "../constants/departments";
 import EmployeeCard from "./EmployeeCard";
 import FilterBar from "./FilterBar";
 import "./EmployeeList.css";
 
-const EmployeeList = ({ onEditEmployee }) => {
+const EmployeeList = ({ onEditEmployee, onViewCV }) => {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState("All Departments");
@@ -35,14 +34,9 @@ const EmployeeList = ({ onEditEmployee }) => {
       const employeesList = [];
       
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        // استخدام التسمية العربية للعرض إذا كانت موجودة
-        const displayDepartment = data.departmentArabic || getArabicDepartment(data.department) || data.department;
-        
         employeesList.push({ 
           id: doc.id, 
-          ...data,
-          displayDepartment // إضافة حقل للعرض فقط
+          ...doc.data()
         });
       });
       
@@ -69,7 +63,7 @@ const EmployeeList = ({ onEditEmployee }) => {
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter((employee) =>
-        employee.name.toLowerCase().includes(term)
+        employee.name?.toLowerCase().includes(term)
       );
     }
 
@@ -77,13 +71,13 @@ const EmployeeList = ({ onEditEmployee }) => {
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "name":
-          return a.name.localeCompare(b.name);
+          return (a.name || "").localeCompare(b.name || "");
         case "age":
-          return a.age - b.age;
+          return (a.age || 0) - (b.age || 0);
         case "experience":
-          return b.experience - a.experience;
+          return (b.experience || 0) - (a.experience || 0);
         case "department":
-          return a.displayDepartment.localeCompare(b.displayDepartment);
+          return (a.department || "").localeCompare(b.department || "");
         default:
           return 0;
       }
@@ -103,8 +97,8 @@ const EmployeeList = ({ onEditEmployee }) => {
     }
 
     const total = employees.length;
-    const averageAge = employees.reduce((sum, emp) => sum + emp.age, 0) / total;
-    const averageExperience = employees.reduce((sum, emp) => sum + emp.experience, 0) / total;
+    const averageAge = employees.reduce((sum, emp) => sum + (emp.age || 0), 0) / total;
+    const averageExperience = employees.reduce((sum, emp) => sum + (emp.experience || 0), 0) / total;
 
     setStats({
       total,
@@ -145,11 +139,13 @@ const EmployeeList = ({ onEditEmployee }) => {
   };
 
   const handleExportData = () => {
+    if (filteredEmployees.length === 0) return;
+    
     const dataToExport = filteredEmployees.map(emp => ({
-      "الاسم": emp.name,
-      "السن": emp.age,
-      "الخبرة": emp.experience,
-      "القسم": emp.displayDepartment
+      "الاسم": emp.name || "",
+      "السن": emp.age || "",
+      "الخبرة": emp.experience || "",
+      "القسم": emp.department || ""
     }));
 
     const csvContent = "data:text/csv;charset=utf-8," 
@@ -164,6 +160,10 @@ const EmployeeList = ({ onEditEmployee }) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleRefresh = () => {
+    fetchEmployees();
   };
 
   if (loading) {
@@ -204,7 +204,7 @@ const EmployeeList = ({ onEditEmployee }) => {
           </button>
           <button 
             className="refresh-btn"
-            onClick={fetchEmployees}
+            onClick={handleRefresh}
           >
             🔄 تحديث القائمة
           </button>
@@ -236,12 +236,10 @@ const EmployeeList = ({ onEditEmployee }) => {
           filteredEmployees.map((employee) => (
             <EmployeeCard 
               key={employee.id} 
-              employee={{
-                ...employee,
-                department: employee.displayDepartment // استخدام النسخة المعروضة
-              }}
+              employee={employee}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onViewCV={onViewCV}
             />
           ))
         ) : (
@@ -252,7 +250,7 @@ const EmployeeList = ({ onEditEmployee }) => {
               {searchTerm 
                 ? `لم يتم العثور على موظفين مطابقين لبحثك عن "${searchTerm}"`
                 : selectedDepartment !== "All Departments"
-                ? `لا يوجد موظفين في قسم ${getArabicDepartment(selectedDepartment) || selectedDepartment}`
+                ? `لا يوجد موظفين في قسم ${selectedDepartment}`
                 : "لم يتم إضافة أي موظفين بعد"
               }
             </p>

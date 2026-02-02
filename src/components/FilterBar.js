@@ -1,12 +1,46 @@
-import React, { useState } from "react";
-import { DEPARTMENTS, ALL_DEPARTMENTS, getArabicDepartment } from "../constants/departments";
+import React, { useState, useEffect } from "react";
+import { db } from "../firebase/config";
+import { collection, getDocs } from "firebase/firestore";
 import "./FilterBar.css";
 
 const FilterBar = ({ selectedDepartment, onFilterChange, onSearch, onSort }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const departmentOptions = [ALL_DEPARTMENTS.en, ...DEPARTMENTS.map(dept => dept.en)];
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
+  const fetchDepartments = async () => {
+    try {
+      setLoading(true);
+      const querySnapshot = await getDocs(collection(db, "departments"));
+      const deptList = [];
+      
+      // إضافة خيار "جميع الأقسام"
+      deptList.push({
+        id: 'all',
+        en: 'All Departments',
+        ar: 'جميع الأقسام'
+      });
+      
+      querySnapshot.forEach((doc) => {
+        deptList.push({ id: doc.id, ...doc.data() });
+      });
+      
+      setDepartments(deptList);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+      // استخدام الأقسام الافتراضية في حالة الخطأ
+      setDepartments([
+        { id: 'all', en: 'All Departments', ar: 'جميع الأقسام' }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -27,6 +61,17 @@ const FilterBar = ({ selectedDepartment, onFilterChange, onSearch, onSort }) => 
   const handleDepartmentClick = (dept) => {
     onFilterChange(dept);
   };
+
+  if (loading) {
+    return (
+      <div className="filter-bar">
+        <h3>تصفية وإدارة الموظفين</h3>
+        <div className="loading-departments">
+          <span>جاري تحميل الأقسام...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="filter-bar">
@@ -62,14 +107,14 @@ const FilterBar = ({ selectedDepartment, onFilterChange, onSearch, onSort }) => 
       {/* أزرار التصفية حسب القسم */}
       <h4 style={{ margin: "15px 0 10px 0", color: "#4a5568" }}>الأقسام:</h4>
       <div className="department-filters">
-        {departmentOptions.map((dept, index) => (
+        {departments.map((dept) => (
           <button
-            key={index}
-            className={`filter-btn ${selectedDepartment === dept ? "active" : ""}`}
-            onClick={() => handleDepartmentClick(dept)}
-            title={dept === ALL_DEPARTMENTS.en ? "عرض جميع الموظفين" : getArabicDepartment(dept)}
+            key={dept.id}
+            className={`filter-btn ${selectedDepartment === dept.en ? "active" : ""}`}
+            onClick={() => handleDepartmentClick(dept.en)}
+            title={dept.ar}
           >
-            {dept === ALL_DEPARTMENTS.en ? "جميع الأقسام" : dept}
+            {dept.en === 'All Departments' ? dept.ar : dept.en}
           </button>
         ))}
       </div>

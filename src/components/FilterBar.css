@@ -255,3 +255,19 @@
     background: #a0aec0;
   }
 }
+
+
+/* أضف في نهاية FilterBar.css */
+
+.loading-departments {
+  text-align: center;
+  padding: 2rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 2px dashed #e2e8f0;
+}
+
+.loading-departments span {
+  color: #718096;
+  font-size: 0.95rem;
+}

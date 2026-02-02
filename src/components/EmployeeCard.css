@@ -38,6 +38,27 @@
   transform: scale(1.05);
 }
 
+/* تاج القسم على الصورة */
+.employee-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  text-align: center;
+}
+
+.department-tag {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
 /* معلومات الموظف */
 .employee-info {
   padding: 1.5rem;
@@ -53,6 +74,7 @@
   text-align: right;
   border-bottom: 2px solid #f7fafc;
   padding-bottom: 0.8rem;
+  line-height: 1.3;
 }
 
 .employee-details {
@@ -69,22 +91,42 @@
 .detail-label {
   color: #718096;
   font-weight: 500;
+  font-size: 0.95rem;
 }
 
 .detail-value {
   color: #2d3748;
   font-weight: 600;
+  font-size: 1rem;
 }
 
+/* البادجات */
 .department-badge {
   display: inline-block;
   padding: 0.3rem 0.8rem;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
-  background-color: #e2e8f0;
-  color: #4a5568;
+  text-align: center;
+  min-width: 80px;
 }
+
+/* ألوان مختلفة للأقسام */
+.department-badge.civil { background: #4299e1; color: white; }
+.department-badge.architectural { background: #ed8936; color: white; }
+.department-badge.survey { background: #38a169; color: white; }
+.department-badge.electrical { background: #9f7aea; color: white; }
+.department-badge.mechanical { background: #f56565; color: white; }
+.department-badge.dc { background: #4fd1c7; color: white; }
+.department-badge.hr { background: #ed64a6; color: white; }
+.department-badge.accountants { background: #667eea; color: white; }
+.department-badge.safety { background: #ecc94b; color: #2d3748; }
+.department-badge.technical-office { background: #0bc5ea; color: white; }
+.department-badge.qs { background: #805ad5; color: white; }
+.department-badge.planning { background: #38a169; color: white; }
+.department-badge.qc { background: #f6ad55; color: #2d3748; }
+.department-badge.executive-engineer { background: #4c51bf; color: white; }
+.department-badge.غير-محدد { background: #a0aec0; color: white; }
 
 /* أزرار السيرة الذاتية */
 .cv-actions {
@@ -92,6 +134,11 @@
   flex-direction: column;
   gap: 10px;
   margin-top: auto;
+}
+
+.cv-secondary-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .cv-button {
@@ -103,11 +150,28 @@
   border: none;
   cursor: pointer;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.view-page-btn {
+  background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+  color: white;
+  width: 100%;
+}
+
+.view-page-btn:hover {
+  background: linear-gradient(135deg, #6b46c1 0%, #553c9a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(128, 90, 213, 0.3);
 }
 
 .view-btn {
   background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
   color: white;
+  flex: 1;
 }
 
 .view-btn:hover {
@@ -119,12 +183,48 @@
 .download-btn {
   background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
   color: white;
+  flex: 1;
 }
 
 .download-btn:hover {
   background: linear-gradient(135deg, #2f855a 0%, #276749 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+}
+
+/* قسم عدم وجود سيرة ذاتية */
+.no-cv-section {
+  margin-top: auto;
+  padding: 1rem;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 2px dashed #e2e8f0;
+  text-align: center;
+}
+
+.no-cv-message {
+  display: block;
+  color: #718096;
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.add-cv-btn {
+  padding: 0.6rem 1rem;
+  background: #e2e8f0;
+  color: #4a5568;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 13px;
+}
+
+.add-cv-btn:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
 }
 
 /* ===========================================
@@ -151,13 +251,7 @@
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  backdrop-filter: blur(5px);
 }
 
 .action-btn {
@@ -171,6 +265,8 @@
   display: flex;
   align-items: center;
   gap: 5px;
+  min-width: 70px;
+  justify-content: center;
 }
 
 .edit-btn {
@@ -181,6 +277,7 @@
 .edit-btn:hover {
   background: #3182ce;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(66, 153, 225, 0.2);
 }
 
 .delete-btn {
@@ -191,6 +288,7 @@
 .delete-btn:hover {
   background: #e53e3e;
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(245, 101, 101, 0.2);
 }
 
 /* ===========================================
@@ -302,6 +400,7 @@
   .action-btn {
     padding: 6px 10px;
     font-size: 11px;
+    min-width: 60px;
   }
   
   .confirm-actions {
@@ -310,6 +409,14 @@
   
   .confirm-btn {
     min-width: 120px;
+  }
+  
+  .cv-secondary-actions {
+    flex-direction: column;
+  }
+  
+  .cv-button {
+    width: 100%;
   }
 }
 
@@ -330,6 +437,7 @@
   align-items: center;
   gap: 10px;
   z-index: 50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .loading-spinner {
@@ -344,6 +452,11 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* رسالة عدم وجود بيانات */
@@ -381,36 +494,6 @@
   pointer-events: none;
 }
 
-/* زر الإجراءات السريعة */
-.quick-actions-trigger {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: white;
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  z-index: 5;
-}
-
-.quick-actions-trigger:hover {
-  background: #f7fafc;
-  transform: scale(1.1);
-}
-
-.quick-actions-trigger svg {
-  width: 18px;
-  height: 18px;
-  color: #4a5568;
-}
-
 /* تحسينات الوصول */
 @media (prefers-reduced-motion: reduce) {
   .employee-card,
@@ -426,7 +509,8 @@
 @media print {
   .employee-actions-overlay,
   .delete-confirm-modal,
-  .quick-actions-trigger {
+  .cv-actions,
+  .no-cv-section {
     display: none !important;
   }
   
@@ -435,95 +519,73 @@
     box-shadow: none;
     border: 1px solid #e2e8f0;
   }
+  
+  .employee-image {
+    height: 150px;
+  }
 }
 
-/* في نهاية الملف، أضف هذه الأنماط */
-
-/* تاج القسم على الصورة */
-.employee-overlay {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.department-tag {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  backdrop-filter: blur(4px);
-}
-
-/* ألوان مختلفة للأقسام */
-.department-badge.civil { background: #4299e1; color: white; }
-.department-badge.architectural { background: #ed8936; color: white; }
-.department-badge.survey { background: #38a169; color: white; }
-.department-badge.electrical { background: #9f7aea; color: white; }
-.department-badge.mechanical { background: #f56565; color: white; }
-.department-badge.dc { background: #4fd1c7; color: white; }
-.department-badge.hr { background: #ed64a6; color: white; }
-.department-badge.accountants { background: #667eea; color: white; }
-.department-badge.safety { background: #ecc94b; color: #2d3748; }
-.department-badge.technical-office { background: #0bc5ea; color: white; }
-.department-badge.qs { background: #805ad5; color: white; }
-.department-badge.planning { background: #38a169; color: white; }
-.department-badge.qc { background: #f6ad55; color: #2d3748; }
-.department-badge.executive-engineer { background: #4c51bf; color: white; }
-
-
-
-/* أضف في نهاية الملف */
-
-/* تاج القسم على الصورة */
-.employee-overlay {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  left: 10px;
-  text-align: center;
-}
-
-.department-tag {
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  backdrop-filter: blur(4px);
-  display: inline-block;
-}
-
-/* ألوان مختلفة للأقسام */
-.department-badge.civil { background: #4299e1; color: white; }
-.department-badge.architectural { background: #ed8936; color: white; }
-.department-badge.survey { background: #38a169; color: white; }
-.department-badge.electrical { background: #9f7aea; color: white; }
-.department-badge.mechanical { background: #f56565; color: white; }
-.department-badge.dc { background: #4fd1c7; color: white; }
-.department-badge.hr { background: #ed64a6; color: white; }
-.department-badge.accountants { background: #667eea; color: white; }
-.department-badge.safety { background: #ecc94b; color: #2d3748; }
-.department-badge.technical-office { background: #0bc5ea; color: white; }
-.department-badge.qs { background: #805ad5; color: white; }
-.department-badge.planning { background: #38a169; color: white; }
-.department-badge.qc { background: #f6ad55; color: #2d3748; }
-.department-badge.executive-engineer { background: #4c51bf; color: white; }
-
-/* تحسينات للصور */
-.employee-image img {
-  transition: transform 0.3s ease;
-}
-
-.employee-image img:hover {
-  transform: scale(1.05);
-}
-
-/* تحسينات للقيم الفارغة */
-.detail-value:empty::before {
-  content: "غير محدد";
-  color: #a0aec0;
-  font-style: italic;
+/* تحسينات للظلام */
+@media (prefers-color-scheme: dark) {
+  .employee-card {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  
+  .employee-name {
+    color: #e2e8f0;
+    border-bottom-color: #4a5568;
+  }
+  
+  .detail-label {
+    color: #a0aec0;
+  }
+  
+  .detail-value {
+    color: #e2e8f0;
+  }
+  
+  .department-tag {
+    background: rgba(0, 0, 0, 0.8);
+  }
+  
+  .no-cv-section {
+    background: #4a5568;
+    border-color: #718096;
+  }
+  
+  .no-cv-message {
+    color: #a0aec0;
+  }
+  
+  .add-cv-btn {
+    background: #718096;
+    color: #e2e8f0;
+  }
+  
+  .add-cv-btn:hover {
+    background: #a0aec0;
+  }
+  
+  .actions-menu {
+    background: rgba(45, 55, 72, 0.95);
+  }
+  
+  .confirm-box {
+    background: #2d3748;
+    color: #e2e8f0;
+  }
+  
+  .confirm-box p {
+    color: #e2e8f0;
+  }
+  
+  .cancel-btn {
+    background: #4a5568;
+    color: #e2e8f0;
+  }
+  
+  .cancel-btn:hover {
+    background: #718096;
+  }
 }

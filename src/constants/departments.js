@@ -13,7 +13,6 @@ export const DEPARTMENTS = [
   { id: 11, en: "QS", ar: "QS" },
   { id: 12, en: "Planning", ar: "Planning" },
   { id: 13, en: "QC", ar: "مراقبة جودة" },
-  { id: 13, en: "Arch", ar: "مدني" },
   { id: 14, en: "Executive Engineer", ar: "مهندس تنفيذي" }
 ];
 
